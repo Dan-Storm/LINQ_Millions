@@ -19,19 +19,25 @@ namespace LINQ_Millions
             new Customer(){ Name="Joe Landy", Balance=9284756.21, Bank="WF"},
             new Customer(){ Name="Meg Ford", Balance=487233.01, Bank="BOA"},
             new Customer(){ Name="Peg Vale", Balance=7001449.92, Bank="BOA"},
-            new Customer(){ Name="Mike Johnson", Balance=790872.12, Bank="WF"},
+            new Customer(){ Name="Deep Patel", Balance=1790872.12, Bank="WF"},
             new Customer(){ Name="Les Paul", Balance=8374892.54, Bank="WF"},
             new Customer(){ Name="Sid Crosby", Balance=957436.39, Bank="FTB"},
             new Customer(){ Name="Sarah Ng", Balance=56562389.85, Bank="FTB"},
             new Customer(){ Name="Tina Fey", Balance=1000000.00, Bank="CITI"},
-            new Customer(){ Name="Sid Brown", Balance=49582.68, Bank="CITI"}
+            new Customer(){ Name="Sid Brown", Balance=7849582.68, Bank="CITI"}
         };
-
+        // Create list of millionaires
         var millionaires = from customer in customers
-                                          where customer.Balance >= 1000000
-                                          select customer;
-
-
+                                         where customer.Balance >= 1000000
+                                         orderby customer.Name.Split(" ")[1]
+                                         select customer;
+        var millionairesInBank = millionaires.GroupBy(customer => customer.Bank);
+        // List the number of millionaires in each bank
+        foreach (IGrouping<String, Customer> bank in millionairesInBank)
+        {
+            System.Console.WriteLine($"{bank.Key}-{bank.Count()}");
+        }
+        // List the name of the millionaire next to the full name of their bank
         var bigBankers =
         millionaires.Join(banks,
                     millionaire => millionaire.Bank,
